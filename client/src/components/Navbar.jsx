@@ -1,9 +1,12 @@
 // Navbar.jsx
 import React from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import { Button } from './ui/button'
 import { motion } from 'framer-motion'
 
 const Navbar = () => {
+    const location = useLocation()
+
     return (
         <motion.nav
             initial={{ y: -100 }}
@@ -19,9 +22,36 @@ const Navbar = () => {
                     >
                         Code Snippet
                     </motion.h1>
-                    <Button variant="outline" className="bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700">
-                        Logout
-                    </Button>
+
+                    <div className="flex items-center space-x-4">
+                        <Link to="/">
+                            <Button
+                                variant="ghost"
+                                className={`${location.pathname === '/' ? 'bg-gray-800' : ''}`}
+                            >
+                                Home
+                            </Button>
+                        </Link>
+                        <Link to="/create">
+                            <Button
+                                variant="ghost"
+                                className={`${location.pathname === '/create' ? 'bg-gray-800' : ''}`}
+                            >
+                                Create
+                            </Button>
+                        </Link>
+                        <Link to="/about">
+                            <Button
+                                variant="ghost"
+                                className={`${location.pathname === '/about' ? 'bg-gray-800' : ''}`}
+                            >
+                                About
+                            </Button>
+                        </Link>
+                        <Button variant="outline" className="bg-gray-800 hover:bg-gray-700 text-gray-200 border-gray-700">
+                            Logout
+                        </Button>
+                    </div>
                 </div>
             </div>
         </motion.nav>
