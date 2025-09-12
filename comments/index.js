@@ -10,6 +10,10 @@ app.use(cors({
     origin: "http://localhost:5173/create",
     credentials: true
 }))
+app.post("/events", (req, res) => {
+    console.log("Receive Event", req.body.type);
+    return res.status(200).json({})
+})
 app.use("/api/v1/snippet", commentRouter)
 
 app.listen(PORT, () => {

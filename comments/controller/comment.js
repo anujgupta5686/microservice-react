@@ -1,33 +1,8 @@
-// import { randomBytes } from "crypto";
-// import { CommentsDB } from "../database/index.js"
-// export const createComment = (req, res) => {
-//     const commentId = randomBytes(4).toString('hex');
-//     const { text } = req.body;
-
-//     const snippetId = req.params.id;
-
-//     const comments = CommentsDB[snippetId] || [];
-//     // create comments
-//     comments.push({ commentId, text });
-//     CommentsDB[snippetId] = comments
-//     return res.status(201).json({
-//         success: true,
-//         message: "Comment Added",
-//         comment: { commentId, text }
-//     })
-// }
-
-// export const getCommentBySnippetId = (req, res) => {
-//     const snippetId = req.params.id;
-//     return res.status(201).json(CommentsDB[snippetId] || [])
-// }
-
-
-// controller/comment.js
+import axios from "axios"
 import { randomBytes } from "crypto";
 import { CommentsDB } from "../database/index.js";
 
-export const createComment = (req, res) => {
+export const createComment = async (req, res) => {
     const commentId = randomBytes(4).toString("hex");
     const { text } = req.body;
     const snippetId = req.params.id;
@@ -51,7 +26,15 @@ export const createComment = (req, res) => {
 
     comments.push(newComment);
     CommentsDB[snippetId] = comments;
-
+    // Before return Emit Event
+    await axios.post("http://localhost:8005/events", {
+        type: "CommentCreated",
+        data: {
+            id: commentId,
+            content: text,
+            snippetId
+        }
+    })
     return res.status(201).json({
         success: true,
         message: "Comment Added",
